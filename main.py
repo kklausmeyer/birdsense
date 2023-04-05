@@ -177,13 +177,14 @@ def main(program):
 #     my_map.add_child(folium.LayerControl())
 
     # Step 4: upload to datapane
-    report_name = f"BirdSense: Drought Relief WaterBird Program - {program}, {season}"
+    report_name = program
     start_last_text = datetime.strptime(start_last, '%Y-%m-%d').strftime("%b %d, %Y")
     end_last_text = datetime.strptime(end_last, '%Y-%m-%d').strftime("%b %d, %Y")
     app = dp.upload_report(
 
         [
-        dp.Text(f'# Weekly Report - {start_last_text} to {end_last_text} #'),
+        dp.Text(f"# BirdSense: Drought Relief WaterBird Program - {program}, {season} #"),
+        dp.Text(f'## Weekly Report - {start_last_text} to {end_last_text} ##'),
         dp.Text(f'last update: {end_string}'),
         dp.Group(
             dp.BigNumber(heading='Total Fields', value=num),
