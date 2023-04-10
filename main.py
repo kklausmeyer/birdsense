@@ -188,7 +188,7 @@ def main(program):
         dp.Text(f'last update: {end_string}'),
         dp.Group(
             dp.BigNumber(heading='Total Fields', value=num),
-            dp.BigNumber(heading='Field with cloud-free data this week',
+            dp.BigNumber(heading='Field with cloud-free data last week',
                          value="{:.2%}".format(percent)
 #                          change="{:.2%}".format(percent - percent2), is_upward_change=True), 
                         ),
@@ -204,7 +204,7 @@ def main(program):
                 fig_history, responsive=True),
             columns=2),
         dp.Text(f'## Watch List for the Week Starting from {start_last_text} ##'),
-        dp.Text(f'* This Watch list does not include the fields without satellite data available this week.'),
+        dp.Text(f'* This Watch list does not include the fields without satellite data available last week.'),
         dp.Table(watch.style.background_gradient(cmap="autumn")),
         dp.Text('## Flooding Percentage by Fields ##'),
         dp.Select(
