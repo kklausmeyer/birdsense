@@ -1,15 +1,17 @@
-# TNC BirdSense Report Automation Workflows
+# TNC BirdSense Report Automation Workflow
 Every year, over 1 billion birds migrate along the Pacific Flyway and travel through California. Many of these birds need wetlands for food and rest to support their journey, but over 95% of the historical wetlands in the Central Valley have been drained and developed. The Nature Conservancy and partners recently launched a program called BirdReturns to pay farmers to flood their fields to support migratory wetland birds.   
+
 For more information, refer to [BirdReturns: A Habitat Timeshare for Migratory Birds](https://www.nature.org/en-us/about-us/where-we-work/united-states/california/stories-in-california/migration-moneyball/).  
 
 As the program scales up with government funds to combat the impacts of the drought, new tools are needed to ensure that farmers flood their fields for the full duration of their contract. The current program has been experimenting with using free images captured by satellites to estimate the extent and duration of flooding on the enrolled fields.   
+
 Based on the promising experiment outcomes, this GitHub Repository is aimed to build a data pipeline to 1) ingest the satellite data, 2) generate flooding extent estimates, and 3) automatically send weekly reports to the field staff who manage the program.  
 
 This repo utilizes the GitHub Action workflow to build a data pipeline and realize the following features.
 ## Features:
-- Extract Sentinel 2 data from Google Earth Engine API
+- Extract satellite data from Sentinel 2 from Google Earth Engine API
 - Process data to obtain the percent of flooding and cloud-free indicator by fields
-- Extract data from Google Drive API
+- Extract field enrollment data from Google Drive API
 - Generate a dashboard report through DataPane APP (example screenshot)
 - Schedule workflows for multiple programs
 - Share dashboard report by email
@@ -18,7 +20,7 @@ This repo utilizes the GitHub Action workflow to build a data pipeline and reali
 ## Preparation
 The following authentications need to be set up and added to repository Secrets.
 ### GEE Authentication with Google Service Account
-To access data from GEE API, Google Searvice Account is used to authenticate to Earth Engine. To do so, follow the [guide of create service account](https://developers.google.com/earth-engine/guides/service_account) and complete the steps below:
+To access data from GEE API, Google Service Account is used to authenticate to Earth Engine. To do so, follow the [guide of create service account](https://developers.google.com/earth-engine/guides/service_account) and complete the steps below:
   1. Create a Google Cloud Project
   2. Choose the created project and create a Service Account
   3. Create a private key for the Service Account and download the JSON key file
@@ -57,10 +59,10 @@ GitHub repository can run the script on a fixed schedule, such as daily, weekly,
 Use [crontab guru](https://crontab.guru) to help generate your cron syntax.
 
 ### Define fields (Kirk to add)
-
+To define the agricultural fields to monitor, go to [Google Earth Engine Code Editor](https://code.earthengine.google.com/) and click on the "Assets" tab.  Click "New" and then select the "Shape file" option under "Table Uploads".  Follow the prompts onscreen.  Once the shapefile is published, share the asset with everyone, and then copy and paste the link to the asset into the user definitions file.
 
 ### Modify user definitions
-The following fileds need be defined:
+The following fields need be defined:
 - Date Range (start and end dates for data extraction from GEE): start_string: string, end_string: string. 
 - Reporting period: start_last and end_last. The current repo set the DataPane reporting period of prevouse week. 
 - (Optional) Google Drive folder/file id in field_bid_names dictionary
