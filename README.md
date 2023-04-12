@@ -58,7 +58,7 @@ There is no need for environment setup. GitHub Action will install all the packa
 GitHub repository can run the script on a fixed schedule, such as daily, weekly, or a specific day of the week/month. The scheduling is done by POSIX cron syntax. For more information, refer to the [GitHub Workflow Trigger Events - Schedule](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows).
 Use [crontab guru](https://crontab.guru) to help generate your cron syntax.
 
-### Define fields (Kirk to add)
+### Define fields
 To define the agricultural fields to monitor, go to [Google Earth Engine Code Editor](https://code.earthengine.google.com/) and click on the "Assets" tab.  Click "New" and then select the "Shape file" option under "Table Uploads".  Follow the prompts onscreen.  Once the shapefile is published, share the asset with everyone, and then copy and paste the link to the asset into the user definitions file.
 
 ### Modify user definitions
