@@ -59,8 +59,6 @@ GitHub Repository secrets allow saving passwords, API tokens, and other sensitiv
 ## How to Use
 There is no need for an environment setup. GitHub Action will install Python and all the packages as required. Any additional packages and version modifications need to be updated in the requirements.txt.
 
-### F
-
 ### Set up a schedule to run repo action
 GitHub repository can run the script on a fixed schedule, such as daily, weekly, or a specific day of the week/month. The scheduling is done by POSIX cron syntax. For more information, refer to the [GitHub Workflow Trigger Events - Schedule](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows).
 Use [crontab guru](https://crontab.guru) to help generate your cron syntax.
@@ -68,7 +66,6 @@ Use [crontab guru](https://crontab.guru) to help generate your cron syntax.
 ### Define fields
 To define the agricultural fields to monitor, go to [Google Earth Engine Code Editor](https://code.earthengine.google.com/) and click on the "Assets" tab.  Click "New" and then select the "Shape file" option under "Table Uploads".  Follow the prompts onscreen.  Once the shapefile is published, share the asset with everyone, and then copy and paste the link to the asset into the user definitions file.
 
-### Modify user definitions
 ### Modify user definitions
 The following fields need to be defined:
 - Date Range (start and end dates for data extraction from GEE): 
