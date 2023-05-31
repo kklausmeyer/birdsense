@@ -26,7 +26,7 @@ The main features of the BirdSense Workflow are:
 To create your own workflow, Fork (button at top right corner of this page)this repository to your workspace. 
 Follow the steps below to obtain required authentications and add to the repository Secrets. As the outcome of the preparation, your repo action secrets will be set as below:
 
-[Required authentications in secrets](images/secrets.png)
+![Required authentications in secrets](images/secrets.png)
 
 ### Create a Google Cloud Project
 A Google Cloud project service account is required to obtain authentications for GEE and Google Drive. 
@@ -56,7 +56,7 @@ Google Drive Python API is used to download files stored in Google Drive. The [G
 
 After setting up the service accounts for GEE and Google Drive authentications, your service accounts will be similar to below:
 
-[List of GCP Service Accounts](images/accounts.png)
+![List of GCP Service Accounts](images/accounts.png)
   
 ### DataPane Authentication
 An API token is required to access DataPane and generate a dashboard report on [DataPane](https://datapane.com/). Follow the [instrution](https://docs.datapane.com/tutorials/automation/#introduction) and complete the following steps:
