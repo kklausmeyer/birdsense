@@ -23,27 +23,44 @@ The main features of the BirdSense Workflow are:
 - Log workflow actions in status.log
 
 ## Preparation
-The following authentications are required and added to the repository Secrets.
+To create your own workflow, Fork (button at top right corner of this page)this repository to your workspace. 
+Follow the steps below to obtain required authentications and add to the repository Secrets. As the outcome of the preparation, your repo action secrets will be set as below:
+
+[Required authentications in secrets](images/secrets.png)
+
+### Create a Google Cloud Project
+A Google Cloud project service account is required to obtain authentications for GEE and Google Drive. 
+  1. Go to [Google Cloud](https://console.cloud.google.com/) and create an account following the [Instruction](https://cloud.google.com/apigee/docs/hybrid/v1.7/precog-gcpaccount)
+  2. Create a GCP project following the [Create a Google Cloud project](https://cloud.google.com/apigee/docs/hybrid/v1.7/precog-gcpproject) instruction.
+    * You may need to provide billing information for creating GCP project. No actual charge will happen for GCP authentication.
+
+
 ### GEE Authentication with Google Service Account
-To access data from GEE API, Google Service Account is used to authenticate to Earth Engine. To do so, follow the [guide to create service account](https://developers.google.com/earth-engine/guides/service_account) and complete the steps below:
-  1. Create a Google Cloud Project
-  2. Choose the created project and create a Service Account
-  3. Create a private key for the Service Account and download the JSON key file
-  4. Register your service account for use with the Earth Engine API.
-  5. Save the JSON key content as a repo secrete with the Name of GEE_AUTH under the repo Settings
-  6. Configure authorizing credentials in definitions.py
+To access data from GEE API, Google Service Account is used to authenticate to Earth Engine. To do so, follow the [guide to create a service account](https://developers.google.com/earth-engine/guides/service_account) and complete the steps below:
+
+  1. Choose the created project and create a Service Account by selecting IAM & Admin => Service Accounts +> CREATE SERVICE ACCOUNT 
+  2. Create a private key for the Service Account and download the JSON key file
+  3. Register your service account for use with the Earth Engine API.
+  4. Save the JSON key content as a repo secrete with the Name of GEE_AUTH under the repo Settings
+  5. Configure authorizing credentials in definitions.py
   
 ### Google Drive API Authentication
 Google Drive Python API is used to download files stored in Google Drive. The [Google Python Quickstart](https://developers.google.com/drive/api/quickstart/python) provides guidelines to enable the API and set up the Authorize credentials. The following steps describe how to set up Google Drive API and access an Excel file in google drive:
+
   1. Create a Google Service Account and create a Key. Download the JSON key file and copy the service account email. 
   2. Enable Google Drive API for the Google Cloud Project setup from the previous step. 
   3. Grant the Google Drive folder/file access to the Service Account just set up using the Service Account email.
   4. Copy the Google Drive folder/file id from the URL. 
   5. Save the JSON key content as a repo secretes with the Name GDRIVE_AUTH under the repo Settings.
   6. Configure authorizing credentials in main.py. Instead of the Google Python Quickstart, the [Ben James blog](https://blog.benjames.io/2020/09/13/authorise-your-python-google-drive-api-the-easy-way/) provides an instruction to set up JSON token as an environment variable(repo secrete).
+
+After setting up the service accounts for GEE and Google Drive authentications, your service accounts will be similar to below:
+
+[List of GCP Service Accounts](images/accounts.png)
   
 ### DataPane Authentication
 An API token is required to access DataPane and generate a dashboard report on [DataPane](https://datapane.com/). Follow the [instrution](https://docs.datapane.com/tutorials/automation/#introduction) and complete the following steps:
+
   1. Create a DataPane account and login
   2. Go to the setting page and copy the API Token
   3. Add the API token as a repo secrete with the Name DATAPANE_TOKEN 
