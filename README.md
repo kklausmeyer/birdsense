@@ -10,7 +10,7 @@ Based on the promising experiment outcomes, this GitHub Repository is aimed to b
 
 This repo utilizes the GitHub Action workflow to build a data pipeline, as shown in the figure below:
 
-![BirdSense_Workflow](images/workflow.png)
+<img src = "images/workflow.png" width = "60%" height = "60%" />
 
 ## Features:
 The main features of the BirdSense Workflow are:
@@ -24,9 +24,9 @@ The main features of the BirdSense Workflow are:
 
 ## Preparation
 To create your own workflow, Fork (button at top right corner of this page)this repository to your workspace. 
-Follow the steps below to obtain required authentications and add to the repository Secrets. As the outcome of the preparation, your repo action secrets will be set as below:
+Follow the steps below to obtain required authentications and add to the repository secrets. As the outcome of the preparation, your repo action secrets will be set as below:
 
-![Required authentications in secrets](images/secrets.png)
+<img src = "images/secrets.png" width = "40%" height = "40%" />
 
 ### Create a Google Cloud Project
 A Google Cloud project service account is required to obtain authentications for GEE and Google Drive. 
@@ -41,8 +41,7 @@ To access data from GEE API, Google Service Account is used to authenticate to E
   1. Choose the created project and create a Service Account by selecting IAM & Admin => Service Accounts +> CREATE SERVICE ACCOUNT 
   2. Create a private key for the Service Account and download the JSON key file
   3. Register your service account for use with the Earth Engine API.
-  4. Save the JSON key content as a repo secrete with the Name of GEE_AUTH under the repo Settings
-  5. Configure authorizing credentials in definitions.py
+  4. Save the JSON key content as a repo secret with the name of GEE_AUTH under the repo Settings 
   
 ### Google Drive API Authentication
 Google Drive Python API is used to download files stored in Google Drive. The [Google Python Quickstart](https://developers.google.com/drive/api/quickstart/python) provides guidelines to enable the API and set up the Authorize credentials. The following steps describe how to set up Google Drive API and access an Excel file in google drive:
@@ -51,34 +50,65 @@ Google Drive Python API is used to download files stored in Google Drive. The [G
   2. Enable Google Drive API for the Google Cloud Project setup from the previous step. 
   3. Grant the Google Drive folder/file access to the Service Account just set up using the Service Account email.
   4. Copy the Google Drive folder/file id from the URL. 
-  5. Save the JSON key content as a repo secretes with the Name GDRIVE_AUTH under the repo Settings.
-  6. Configure authorizing credentials in main.py. Instead of the Google Python Quickstart, the [Ben James blog](https://blog.benjames.io/2020/09/13/authorise-your-python-google-drive-api-the-easy-way/) provides an instruction to set up JSON token as an environment variable(repo secrete).
+  5. Save the JSON key content as a repo secrets with the Name GDRIVE_AUTH under the repo Settings.
+
+Instead of the Google Python Quickstart, the [Ben James blog](https://blog.benjames.io/2020/09/13/authorise-your-python-google-drive-api-the-easy-way/) provides an instruction to set up JSON token as an environment variable(repo secret).
 
 After setting up the service accounts for GEE and Google Drive authentications, your service accounts will be similar to below:
 
-![List of GCP Service Accounts](images/accounts.png)
+<img src = "images/accounts.png" width = "40%" height = "40%" />
   
 ### DataPane Authentication
-An API token is required to access DataPane and generate a dashboard report on [DataPane](https://datapane.com/). Follow the [instrution](https://docs.datapane.com/tutorials/automation/#introduction) and complete the following steps:
+An API token is required to access DataPane and generate a dashboard report on [DataPane](https://datapane.com/). Follow the instruction below and set DataPane API key in repo secrets:
 
   1. Create a DataPane account and login
-  2. Go to the setting page and copy the API Token
-  3. Add the API token as a repo secrete with the Name DATAPANE_TOKEN 
-  
+  2. Go to Getting started => LOGIN TO DATAPANE (Login with your API key) and copy the API Token
+  3. Add the API token as a repo secret with the Name DATAPANE_TOKEN 
+
 ### Gmail Authentication
-Yet Another Gmail [yagmail](https://yagmail.readthedocs.io/en/latest/) is applied to send emails automatically. It requires a sign-in process to authorize. Follow the instruction to obtain the [Gmail App password](https://support.google.com/mail/answer/185833?hl=en). Then, add the password to the repo secrete with the name GMAIL_PWD.
+Yet Another Gmail [yagmail](https://yagmail.readthedocs.io/en/latest/) is applied to send emails automatically. It requires a sign-in process to authorize. Follow the instruction to obtain the [Gmail App password](https://support.google.com/mail/answer/185833?hl=en). Then, add the password to the repo secret with the name GMAIL_PWD.
 
 ### GitHub Repository Secret Set Up
 GitHub Repository secrets allow saving passwords, API tokens, and other sensitive information. The secrets created are available for GitHub Actions workflows. Follow the [instructions to create and use repository secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and complete the steps below:
   1. Go to repository Settings and create the required secrets in the Security section
   2. Access the secrets in the workflow .yml file
+  3. Update the following codes if you use different secrets name or additional secrets
+
+In .github/workflows/actions.yml:
+  ```
+        - name: execute py script # run main.py
+        uses: datapane/build-action@v2
+        env:
+          GMAIL_PWD: ${{secrets.GMAIL_PWD }}
+          GEE_AUTH: ${{secrets.GEE_AUTH}}
+          GDRIVE_AUTH: ${{secrets.GDRIVE_AUTH}}
+        with:
+          script: "main.py"
+          token: ${{ secrets.DATAPANE_TOKEN }}
+  ```
+In definitions.py:
+```
+  GEE_AUTH = os.environ["GEE_AUTH"]
+```
+In main.py:
+```
+    GMAIL_PWD = os.environ["GMAIL_PWD"]
+    GDRIVE_AUTH = os.environ["GDRIVE_AUTH"]
+```
 
 ## How to Use
-There is no need for an environment setup. GitHub Action will install Python and all the packages as required. Any additional packages and version modifications need to be updated in the requirements.txt.
+There is no need for an environment setup. GitHub Action will install Python and all the required packages. Any additional packages and version modifications need to be updated in the requirements.txt.
 
 ### Set up a schedule to run repo action
 GitHub repository can run the script on a fixed schedule, such as daily, weekly, or a specific day of the week/month. The scheduling is done by POSIX cron syntax. For more information, refer to the [GitHub Workflow Trigger Events - Schedule](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows).
 Use [crontab guru](https://crontab.guru) to help generate your cron syntax.
+Here is an example of every Monday morning at 8 AM (PT):
+```
+on:
+    schedule:
+        # run at 8am every three days
+        - cron: "00 15 * * 1"
+```
 
 ### Define fields
 To define the agricultural fields to monitor, go to [Google Earth Engine Code Editor](https://code.earthengine.google.com/) and click on the "Assets" tab.  Click "New" and then select the "Shape file" option under "Table Uploads".  Follow the prompts onscreen.  Once the shapefile is published, share the asset with everyone, and then copy and paste the link to the asset into the user definitions file.
