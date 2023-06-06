@@ -10,7 +10,7 @@ Based on the promising experiment outcomes, this GitHub Repository is aimed to b
 
 This repo utilizes the GitHub Action workflow to build a data pipeline, as shown in the figure below:
 
-<img src = "images/workflow.png" width = "60%" height = "60%" />
+<img src = "images/workflow.png" width = "80%" height = "80%" />
 
 ## Features:
 The main features of the BirdSense Workflow are:
@@ -23,10 +23,11 @@ The main features of the BirdSense Workflow are:
 - Log workflow actions in status.log
 
 ## Preparation
-To create your own workflow, Fork (button at top right corner of this page)this repository to your workspace. 
+To create your own workflow, Fork (button at top)this repository to your workspace.
+From the drop-down menu of your profile at the top right corner and select "Your repositories". Find the forked BirdSense repo.
 Follow the steps below to obtain required authentications and add to the repository secrets. As the outcome of the preparation, your repo action secrets will be set as below:
 
-<img src = "images/secrets.png" width = "40%" height = "40%" />
+<img src = "images/secrets.png" width = "80%" height = "80%" />
 
 ### Create a Google Cloud Project
 A Google Cloud project service account is required to obtain authentications for GEE and Google Drive. 
@@ -42,8 +43,13 @@ To access data from GEE API, Google Service Account is used to authenticate to E
   2. Create a private key for the Service Account and download the JSON key file
   3. Register your service account for use with the Earth Engine API.
   4. Save the JSON key content as a repo secret with the name of GEE_AUTH under the repo Settings 
+  5. In definitions.py update the "ee_account" variables with the email associated with your GCP service account as below:
+  ```
+    ee_account = 'gee-auth@your_service_account_email.iam.gserviceaccount.com'
+  ```
   
-### Google Drive API Authentication
+### Google Drive API Authentication (Optional)
+Google Drive is an optional place to store any other sensitive information without additional cost. Skip this step if you don't plan to store data in Google Drive. 
 Google Drive Python API is used to download files stored in Google Drive. The [Google Python Quickstart](https://developers.google.com/drive/api/quickstart/python) provides guidelines to enable the API and set up the Authorize credentials. The following steps describe how to set up Google Drive API and access an Excel file in google drive:
 
   1. Create a Google Service Account and create a Key. Download the JSON key file and copy the service account email. 
@@ -56,17 +62,17 @@ Instead of the Google Python Quickstart, the [Ben James blog](https://blog.benja
 
 After setting up the service accounts for GEE and Google Drive authentications, your service accounts will be similar to below:
 
-<img src = "images/accounts.png" width = "40%" height = "40%" />
+<img src = "images/accounts.png" width = "80%" height = "80%" />
   
 ### DataPane Authentication
 An API token is required to access DataPane and generate a dashboard report on [DataPane](https://datapane.com/). Follow the instruction below and set DataPane API key in repo secrets:
 
   1. Create a DataPane account and login
-  2. Go to Getting started => LOGIN TO DATAPANE (Login with your API key) and copy the API Token
+  2. Go to Getting started => LOGIN TO DATAPANE (Login with your API key) and copy the API Token. Or you can find the token in your [DataPane profile](https://cloud.datapane.com/settings/).
   3. Add the API token as a repo secret with the Name DATAPANE_TOKEN 
 
 ### Gmail Authentication
-Yet Another Gmail [yagmail](https://yagmail.readthedocs.io/en/latest/) is applied to send emails automatically. It requires a sign-in process to authorize. Follow the instruction to obtain the [Gmail App password](https://support.google.com/mail/answer/185833?hl=en). Then, add the password to the repo secret with the name GMAIL_PWD.
+Yet Another Gmail [yagmail](https://yagmail.readthedocs.io/en/latest/) is applied to send emails automatically. It requires a sign-in process to authorize. Follow the instruction in the "Create & use app passwords" section to obtain the [Gmail App password](https://support.google.com/mail/answer/185833?hl=en). Then, add the password to the repo secret with the name GMAIL_PWD.
 
 ### GitHub Repository Secret Set Up
 GitHub Repository secrets allow saving passwords, API tokens, and other sensitive information. The secrets created are available for GitHub Actions workflows. Follow the [instructions to create and use repository secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and complete the steps below:
@@ -102,7 +108,7 @@ There is no need for an environment setup. GitHub Action will install Python and
 ### Set up a schedule to run repo action
 GitHub repository can run the script on a fixed schedule, such as daily, weekly, or a specific day of the week/month. The scheduling is done by POSIX cron syntax. For more information, refer to the [GitHub Workflow Trigger Events - Schedule](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows).
 Use [crontab guru](https://crontab.guru) to help generate your cron syntax.
-Here is an example of every Monday morning at 8 AM (PT):
+Here is an example of every Monday morning at 8 AM (PT) in the actions.yml file under .github/workflows folder:
 ```
 on:
     schedule:
@@ -126,6 +132,9 @@ The following fields need to be defined:
 - Feature names of Field Id, Bid ID, and enrolled status used for the specific program: field_bid_names
 - Email recipients can be defined as a list following the respective program. 
 
+Here is an example of adding a new program:
+(TBD)
+
 ### Format Dashboard
 DataPane is used to generate a reporting dashboard. DataPane allows the transfer of Jupyter Notebook or Python script into an interactive web app. It is friendly with Pandas DataFrame, Matplotlib/Seaborn, Plotly, and Folim for map visualization. 
 Refer to the [DataPane documentation](https://docs.datapane.com/) for page, numbers, table, plot, and map formatting.
@@ -133,8 +142,24 @@ Refer to the [DataPane documentation](https://docs.datapane.com/) for page, numb
 ### Modifile email message, sender and recieptants
 Refer to the example of [yagmail](https://pypi.org/project/yagmail/) to format your email contents.
 
+### Test your repo
+After completing all the modifications above, we can triggle a test run and debug accordingaly.
+First is to change trigger mechnism to "push", which means the GitHub Action will run the workflow whenever there is a change (Commit) to the repo. To do so, we need to update the codes mentioned in the "Set up a schedule to run repo action" above to the ones in the actions.yml file under .github/workflows folder with the following lines:
+```
+on:
+  push:
+    branches:
+      - main
+```
+The run status and logs can be found in the "Actions" tab as shown below. By clicking a run main.py => "build" button, you can check the details of the running logs. 
+
+<img src = "images/actions.png" width = "80%" height = "80%" />
+
+Here is an option of manually trigger the workflow by clicking the "Re-run all jobs" at the top right as shown above.
+
+
 ## License:
-his project is licensed under the GNU General Public License v2.0 - see the LICENSE file for details
+This project is licensed under the GNU General Public License v2.0 - see the LICENSE file for details
 
 ## Acknowledgements:
 
