@@ -26,17 +26,17 @@ try:
 except KeyError:
     GMAIL_PWD = "Token not available!"
 
+    # Google Drive authentication and read the Excel file from google drive
 try:
     GDRIVE_AUTH = os.environ["GDRIVE_AUTH"]
+    # Google Drive authentication and read the Excel file from google drive
+    gdrive_auth = json.loads(GDRIVE_AUTH)
+    creds = service_account.Credentials.from_service_account_info(
+        gdrive_auth, scopes=SCOPES)
 except KeyError:
     GDRIVE_AUTH = "Token not available!"
-
-# Google Drive authentication and read the Excel file from google drive
-gdrive_auth = json.loads(GDRIVE_AUTH)
-creds = service_account.Credentials.from_service_account_info(
-    gdrive_auth, scopes=SCOPES)
-service = build('drive', 'v3', credentials=creds)
-
+    
+# uncomment the following section to start logging every run
 # logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
 # logger_file_handler = logging.handlers.RotatingFileHandler(
