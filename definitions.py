@@ -9,7 +9,7 @@ except KeyError:
     GEE_AUTH = "Token not available!"
 
 # GEE authentication
-ee_account = 'gee-auth@tnc-birdreturn-test.iam.gserviceaccount.com'
+ee_account = 'global-gde-d3df06dd660eca17ed6@codefornature.iam.gserviceaccount.com'
 credentials = ee.ServiceAccountCredentials(ee_account, key_data=GEE_AUTH)
 ee.Initialize(credentials)
 
